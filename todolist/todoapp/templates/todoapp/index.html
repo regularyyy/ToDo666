@@ -1,0 +1,47 @@
+{% extends 'todoapp/layout.html' %}
+
+{% block title %}
+<title>Tasker</title>
+{% endblock %}
+
+{% block content %}
+
+<div class="block-1">
+
+    <h1>My task manager</h1>
+    <h3>Manage yout time!</h3>
+
+    <form action="{% url 'add' %}" method="post">
+        {% csrf_token %}
+
+        <div>
+            <label>New task:</label>
+            <input type="text" name="title" placeholder="Task name"><br>
+        </div>
+
+        <button type="submit">Add</button>
+    </form>
+
+{% for todo in todo_list %}
+
+<div class="block-2">
+    <p>№{{ todo.id }} {{ todo.title }}</p>
+
+    {% if todo.is_complete == False %}
+    <span >Not completed</span>
+
+    <a href="{% url 'update' todo_id=todo.id %}">Close</a>
+    {% else %}
+    <span>Complete</span>
+
+    <a href="{% url 'update' todo_id=todo.id %}">Open</a>
+    {% endif %}
+
+    <a href="{% url 'delete' todo_id=todo.id %}">Delete</a>
+</div>
+
+{% endfor %}
+
+</div>
+
+{% endblock %}
